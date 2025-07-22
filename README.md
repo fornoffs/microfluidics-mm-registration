@@ -64,3 +64,14 @@ Three dataset types were used: synthetic, semi-synthetic, and experimental micro
     ├── timeseries_alignment_framework.py     # Main registration pipeline
     └── utils.py                              # Utility functions (simplified)
 ```
+
+## Acknowledgments
+
+This work was conducted as part of a BA thesis at Humboldt-Universität zu Berlin.
+
+**Microscopy data provided by:**
+- Hannah Raasch
+- María José Giralt Zúñiga  
+- Philipp F. Popp
+
+**Lab affiliation:** [Molecular Microbiology Lab](https://www.molmicro.hu-berlin.de/cv_marc.html) - Prof. Dr. Marc Erhardt, Humboldt-Universität zu Berlin
