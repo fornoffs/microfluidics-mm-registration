@@ -1,0 +1,20 @@
+# Requirements for Mother Machine Timeseries Registration Analysis
+# Core scientific computing
+numpy>=1.26.0
+scipy>=1.13.0
+pandas>=2.2.0
+
+# Image processing and computer vision
+opencv-python>=4.10.0
+scikit-image>=0.24.0
+aicsimageio>=4.14.0
+
+# Visualization
+matplotlib>=3.8.0
+
+# Jupyter environment (for notebook execution)
+jupyter>=1.0.0
+ipywidgets>=8.0.0
+
+# Optional: for performance monitoring
+psutil>=5.9.0 
