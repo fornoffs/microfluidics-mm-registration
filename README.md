@@ -2,8 +2,6 @@
 
 This repository contains the implementation of automated rigid image registration methods for time-lapse microscopy data from Mother Machine (MM) devices. The work focuses on rotation and translation correction in MM time series using three main approaches: Hough Transform (HT), phase cross-correlation (XCorr), and ORB (Oriented FAST and Rotated BRIEF) feature-based methods.
 
-**BA Thesis Project** - A demonstration of different registration methods for MM time series analysis.
-
 ## Overview
 
 The project implements three registration approaches:
