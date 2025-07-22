@@ -1,12 +1,12 @@
 # Mother Machine Timeseries Registration Analysis
 
-This repository contains the implementation and evaluation of automated rigid image registration methods for time-lapse microscopy data from Mother Machine (MM) devices. The work focuses on rotation and translation correction in MM time series using three main approaches: Hough Transform (HT), phase cross-correlation (XCorr), and ORB (Oriented FAST and Rotated BRIEF) feature-based methods.
+This repository contains the implementation of automated rigid image registration methods for time-lapse microscopy data from Mother Machine (MM) devices. The work focuses on rotation and translation correction in MM time series using three main approaches: Hough Transform (HT), phase cross-correlation (XCorr), and ORB (Oriented FAST and Rotated BRIEF) feature-based methods.
 
 **BA Thesis Project** - A demonstration of different registration methods for MM time series analysis.
 
 ## Overview
 
-The project implements and compares three registration approaches:
+The project implements three registration approaches:
 - **Hough Transform (HT)**: Line-based rotation estimation
 - **Phase Cross-correlation (XCorr)**: Translation correction in the Fourier domain  
 - **ORB**: Feature-based method for both rotation and translation
@@ -17,8 +17,8 @@ Additionally, temporally stabilized variants (HT-Prev, ORB-Prev) are introduced 
 
 1. Clone this repository:
 ```bash
-git clone <repository-url>
-cd <repository-name>
+git clone https://github.com/fornoffs/microfluidics-mm-registration.git
+cd microfluidics-mm-registration
 ```
 
 2. Install dependencies:
@@ -55,7 +55,7 @@ Three dataset types were used: synthetic, semi-synthetic, and experimental micro
 ├── requirements.txt                            # Python dependencies
 ├── README.md                                   # This file
 ├── data/                                       # Test datasets
-│   └── test_10_timepoints.tif                  # Small test dataset
+│   └── sample10timepoints.tif                  # Small test dataset
 └── timeseries_alignment/                       # Registration framework
     ├── __init__.py
     ├── ht.py                                 # Hough transform implementation
