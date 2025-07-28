@@ -1,6 +1,4 @@
 # Requirements for Mother Machine Timeseries Registration Analysis
-# Python version
-python>=3.11,<3.12
 
 # Core scientific computing
 numpy==1.26.4
@@ -8,7 +6,7 @@ scipy==1.13.0
 pandas==2.2.1
 
 # Image processing and computer vision
-opencv-python==4.10.0
+opencv-python>=4.10.0,<4.11
 scikit-image==0.24.0
 aicsimageio==4.14.0
 
