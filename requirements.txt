@@ -1,6 +1,6 @@
 # Requirements for Mother Machine Timeseries Registration Analysis
 # Python version
-python==3.11.0
+python>=3.11,<3.12
 
 # Core scientific computing
 numpy==1.26.4
