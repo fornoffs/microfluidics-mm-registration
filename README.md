@@ -19,17 +19,37 @@ git clone https://github.com/fornoffs/microfluidics-mm-registration.git
 cd microfluidics-mm-registration
 ```
 
-2. Install dependencies:
+2. Install dependencies (choose one option):
+
+**Option A: Using conda (recommended)**
+```bash
+conda create -n mm-registration python=3.11
+conda activate mm-registration
+pip install -r requirements.txt
+```
+
+**Option B: Using pip**
 ```bash
 pip install -r requirements.txt
 ```
 
+**Note:** Jupyter notebook is included in the requirements and will be installed automatically.
+
 ## Usage
 
-1. Open the Jupyter notebook:
+1. Activate your environment (if using conda):
 ```bash
-jupyter notebook mother_machine_registration_analysis.ipynb
+conda activate mm-registration
 ```
+
+2. Start Jupyter notebook:
+```bash
+jupyter notebook
+```
+
+3. Open the analysis notebook:
+   - Navigate to `mother_machine_registration_analysis.ipynb`
+   - Or run directly: `jupyter notebook mother_machine_registration_analysis.ipynb`
 
 2. Follow the notebook sections:
    - **0. Imports**: Load all necessary libraries and functions

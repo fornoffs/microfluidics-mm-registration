@@ -23,7 +23,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import psutil
-from memory_profiler import profile
 from scipy.ndimage import sobel
 from skimage.metrics import structural_similarity as ssim
 

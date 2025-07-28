@@ -141,25 +141,25 @@ def ht_prev_rotation_wrapper(img, t, last_angle, template, **kwargs):
         raise ValueError(f"Last angle must be numeric, got {type(last_angle)}")
     
     plot = kwargs.get('plot', False)
-    
+
     try:
-        # Only rotate if we have a previous angle
-        if t > 0:        
-            img = rotate(img, -last_angle, preserve_range=True)
+    # Only rotate if we have a previous angle
+    if t > 0:        
+        img = rotate(img, -last_angle, preserve_range=True)
 
         current_angle = ht_rotation(img, plot=plot)
         
-        if plot:
+    if plot:
             print("Note: HT does not use a template.")
             print(f"HT-Prev. t = {t}, rotation angle = {current_angle:.2f}°")
             try:
-                img_original = rotate(img, last_angle, preserve_range=True)
+        img_original = rotate(img, last_angle, preserve_range=True)
                 diffimage_after_transform(template, img_original, (0, 0), last_angle+current_angle, DIFF_IMAGE_THRESHOLD, context=f"HT-Prev t={t}")
             except Exception as e:
                 print(f"Warning: Could not display difference image: {e}")
         
-        return last_angle + current_angle
-        
+    return last_angle + current_angle
+
     except Exception as e:
         print(f"Error in HT-Prev rotation at timepoint {t}: {e}")
         return last_angle  # Return previous angle on error
@@ -324,7 +324,7 @@ def xcorr_translation_wrapper(img, t, last_angle, template, **kwargs):
     
     if plot:
         print(f"XCorr. t = {t}, translation = {shift}")
-        
+
     return shift
 
 def orb_translation_wrapper(img, t, last_angle, template, **kwargs):
@@ -443,34 +443,34 @@ def create_template_hough(img_data, channel=0, plot=False, t=0):
         raise ValueError(f"Timepoint {t} out of bounds for data with {img_data.shape[0]} timepoints")
     
     try:
-        # Get first timepoint image
-        first_frame = img_data[t, channel, 0, :, :]
-        
+    # Get first timepoint image
+    first_frame = img_data[t, channel, 0, :, :]
+    
         if first_frame.size == 0:
             raise ValueError("Selected frame is empty")
         
-        if plot:
-            plt.figure(figsize=(10, 5))
-            plt.subplot(121)
-            plt.imshow(first_frame, cmap='gray')
-            plt.title(f'Original Image (t={t})')
-            plt.axis('off')
-        
+    if plot:
+        plt.figure(figsize=(10, 5))
+        plt.subplot(121)
+        plt.imshow(first_frame, cmap='gray')
+        plt.title(f'Original Image (t={t})')
+        plt.axis('off')
+    
         # Get rotation angle using HT
         angle = ht_rotation(first_frame, plot=plot)
-        
-        # Apply rotation to create template
-        template = rotate(first_frame, -angle, preserve_range=True)
-        
-        if plot:
-            plt.subplot(122)
-            plt.imshow(template, cmap='gray')
-            plt.title(f'Rotated Template (angle={angle:.2f}°)')
-            plt.axis('off')
-            plt.tight_layout()
-            plt.show()
-        
-        return template, angle
+    
+    # Apply rotation to create template
+    template = rotate(first_frame, -angle, preserve_range=True)
+    
+    if plot:
+        plt.subplot(122)
+        plt.imshow(template, cmap='gray')
+        plt.title(f'Rotated Template (angle={angle:.2f}°)')
+        plt.axis('off')
+        plt.tight_layout()
+        plt.show()
+    
+    return template, angle
         
     except Exception as e:
         print(f"Error creating template at timepoint {t}, channel {channel}: {e}")
@@ -603,8 +603,8 @@ def align_time_series(
         # Handle case where template might be a tuple (template, angle)
         if isinstance(template, tuple) and len(template) == 2:
             template_img = template[0]  # Extract just the image from (template, angle)
-        else:
-            template_img = template
+    else:
+        template_img = template
     
     if use_template_prev:
         template_prev = template_img
@@ -612,7 +612,7 @@ def align_time_series(
     # loop through all timepoints
     for t in range(n_timepoints):
         try:
-            img = img_data[t, channel, 0, :, :]
+        img = img_data[t, channel, 0, :, :]
             
             # Validate current frame
             if img is None or img.size == 0:
@@ -621,22 +621,22 @@ def align_time_series(
                 shifts.append((0.0, 0.0))
                 continue
             
-            # Rotation
-            if rotation_method is not None:
+        # Rotation
+        if rotation_method is not None:
                 try:
-                    # Pass plot parameter to the rotation method
-                    angle = rotation_method(img, t, last_angle, template=template_img, plot=plot, **kwargs)
+            # Pass plot parameter to the rotation method
+            angle = rotation_method(img, t, last_angle, template=template_img, plot=plot, **kwargs)
                     if not isinstance(angle, (int, float)):
                         print(f"Warning: Invalid angle type at timepoint {t}, using 0.0")
                         angle = 0.0
                 except Exception as e:
                     print(f"Error in rotation method at timepoint {t}: {e}")
                     angle = 0.0
-            else:
+        else:
                 angle = 0.0
                 
-            angles.append(angle)
-            last_angle = angle
+        angles.append(angle)
+        last_angle = angle
             
         except Exception as e:
             print(f"Error processing timepoint {t}: {e}")
@@ -664,28 +664,28 @@ def align_time_series(
      # Translation
         if translation_method is not None: 
             try:
-                if use_template_prev and t > 0:
-                    # Get previous image and transform it by previous rotation and translation
-                    prev_img = img_data[t-1, channel, 0, :, :]
-                    height, width = prev_img.shape
-                    center = (width / 2, height / 2)
-                    
-                    # Create transformation matrix combining rotation and translation
-                    rot_mat = cv2.getRotationMatrix2D(center, -angles[-1], 1.0)
-                    rot_mat[0, 2] -= shifts[-1][1]  # Negative x translation
-                    rot_mat[1, 2] -= shifts[-1][0]  # Negative y translation
-                    
-                    # Apply transformation with zero padding
-                    prev_img = cv2.warpAffine(
-                        prev_img, rot_mat, (width, height),
-                        flags=cv2.INTER_LINEAR,
-                        borderMode=cv2.BORDER_CONSTANT,
-                        borderValue=0
-                    )
-                    template_prev = prev_img
-                    shift = translation_method(img, t, angle, template=template_prev, plot=plot, **kwargs)
-                else:
-                    shift = translation_method(img, t, angle, template=template_img, plot=plot, **kwargs)
+            if use_template_prev and t > 0:
+                # Get previous image and transform it by previous rotation and translation
+                prev_img = img_data[t-1, channel, 0, :, :]
+                height, width = prev_img.shape
+                center = (width / 2, height / 2)
+                
+                # Create transformation matrix combining rotation and translation
+                rot_mat = cv2.getRotationMatrix2D(center, -angles[-1], 1.0)
+                rot_mat[0, 2] -= shifts[-1][1]  # Negative x translation
+                rot_mat[1, 2] -= shifts[-1][0]  # Negative y translation
+                
+                # Apply transformation with zero padding
+                prev_img = cv2.warpAffine(
+                    prev_img, rot_mat, (width, height),
+                    flags=cv2.INTER_LINEAR,
+                    borderMode=cv2.BORDER_CONSTANT,
+                    borderValue=0
+                )
+                template_prev = prev_img
+                shift = translation_method(img, t, angle, template=template_prev, plot=plot, **kwargs)
+            else:
+                shift = translation_method(img, t, angle, template=template_img, plot=plot, **kwargs)
                 
                 # Validate shift result
                 if not isinstance(shift, (tuple, list)) or len(shift) != 2:
@@ -803,8 +803,8 @@ def align_time_series_multiprocessing(
         # Handle case where template might be a tuple (template, angle)
         if isinstance(template, tuple) and len(template) == 2:
             template_img = template[0]  # Extract just the image from (template, angle)
-        else:
-            template_img = template
+    else:
+        template_img = template
     
     if use_template_prev:
         template_prev = template_img
